@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import contactsActions from '../../redux/contacts/contacts-actions';
 import s from './Form.module.css';
 
 function Form({ onSubmit }) {
@@ -67,7 +69,11 @@ Form.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-export default Form;
+const mapDispatchToProps = dispatch => ({
+    onSubmit: text => dispatch(contactsActions.addContact(text)),
+});
+
+export default connect(null, mapDispatchToProps)(Form);
 
 // class Form extends Component{
 //     state = {
