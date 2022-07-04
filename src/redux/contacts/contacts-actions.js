@@ -1,24 +1,44 @@
-
-import types from './contacts-types';
+import { createAction } from '@reduxjs/toolkit';
 import { nanoid } from "nanoid";
 
-export const addContact = ({ name, number }) => ({
-    type: types.ADD,
+export const addContact = createAction('contacts/add', ({ name, number }) => ({
     payload: {
         id: nanoid(),
         name,
         number,
     },
-});
+}));
 
-export const deleteContact = (contactId) => ({
-    type: types.DELETE,
-    payload: contactId,
-});
+export const deleteContact = createAction('contacts/delete');
 
-export const changeFilter = (value) => ({
-    type: types.CHANGE_FILTER,
-    payload: value,
-});
+export const changeFilter = createAction('contacts/changeFilter');
 
-// export default { addContact, deleteContact, changeFilter };
+
+
+// ========================================================================
+// redux
+
+// export const addContact = ({ name, number }) => ({
+//     type: types.ADD,
+//     payload: {
+//         id: nanoid(),
+//         name,
+//         number,
+//     },
+// });
+
+
+
+
+// export const deleteContact = (contactId) => ({
+//     type: types.DELETE,
+//     payload: contactId,
+// });
+
+
+
+
+// export const changeFilter = (value) => ({
+//     type: types.CHANGE_FILTER,
+//     payload: value,
+// });

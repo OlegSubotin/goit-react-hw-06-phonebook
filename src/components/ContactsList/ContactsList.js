@@ -31,27 +31,14 @@ ContactsList.propTypes = {
     onContactDelete:PropTypes.func.isRequired,
 };
 
-//   function getVisibleContacts() {
-//     const normalizedFilter = filter.toLocaleLowerCase();
-//     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter) || contact.number.includes(normalizedFilter));
-//   };
-
 const getVisibleContacts = (allContacts, filter) => {
-    const normalizedFilter = filter.toLocaleLowerCase();
+    const normalizedFilter = filter.toLowerCase();
 
     return allContacts.filter(contact =>
         contact.name.toLowerCase().includes(normalizedFilter)
         || contact.number.includes(normalizedFilter)
     );
 };
-
-// const mapStateToProps = (state) => {
-//     const { filter, items } = state.contacts;
-
-//     const visibleContacts = getVisibleContacts(items, filter);
-
-//     return { contacts: visibleContacts, };   
-// };
 
 const mapStateToProps = ({ contacts: { items, filter } }) => ({
     contacts: getVisibleContacts(items, filter),
@@ -60,7 +47,5 @@ const mapStateToProps = ({ contacts: { items, filter } }) => ({
 const mapDispatchToProps = dispatch => ({
     onContactDelete: id => dispatch(deleteContact(id)),
 });
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);
