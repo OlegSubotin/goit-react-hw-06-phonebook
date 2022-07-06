@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import {addContact} from '../../redux/contacts/contacts-actions';
+import { useDispatch, useSelector } from "react-redux";
+import { addContact } from '../../redux/contacts/contacts-actions';
+import { getContacts } from "redux/contacts/contacts-selectors";
 import s from './Form.module.css';
 
-function Form({ onSubmit }) {
+function Form() {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
+    const dispatch = useDispatch();
+    const contacts = useSelector(getContacts);
 
     const nameInputId = nanoid();
     const numberInputId = nanoid();
@@ -25,8 +27,12 @@ function Form({ onSubmit }) {
 
     const handleSubmit = e => {
         e.preventDefault();
-        onSubmit({ name, number });
-        reset();
+        if (contacts.find(contact => contact.name === name || contact.number === number)) {
+            alert(`! ${name} exist in the book !`)
+        } else {
+            dispatch(addContact({ name, number }));
+            reset();
+        };        
     }; 
     
     const reset = () => {
@@ -65,12 +71,4 @@ function Form({ onSubmit }) {
     );
 };
 
-Form.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = dispatch => ({
-    onSubmit: text => dispatch(addContact(text)),
-});
-
-export default connect(null, mapDispatchToProps)(Form);
+export default Form;

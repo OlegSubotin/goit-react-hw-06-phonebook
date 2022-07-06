@@ -1,13 +1,16 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import { nanoid } from "nanoid";
-import { connect } from "react-redux";
-import {changeFilter} from "../../redux/contacts/contacts-actions";
+import { useSelector, useDispatch } from "react-redux";
+import { changeFilter } from "../../redux/contacts/contacts-actions";
+import { getFilter } from "redux/contacts/contacts-selectors";
 import s from './Filter.module.css';
 
 const searchInputId = nanoid();
 
-const Filter = ({value, onChange}) => {
+const Filter = () => {
+    const value = useSelector(getFilter);
+    const dispatch = useDispatch();
+
     return (
         <div className={s.wrapper}>
             <label htmlFor={searchInputId} className={s.label}>Find contacts by name</label>
@@ -16,23 +19,10 @@ const Filter = ({value, onChange}) => {
                 className={s.input}
                 type='text'
                 value={value}
-                onChange={onChange}
+                onChange={e => dispatch(changeFilter(e.target.value))}
             />
         </div>
     );
 };
 
-Filter.propTypes = {
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-    value: state.contacts.filter,
-});
-
-const mapDispatchToProps = dispatch => ({
-    onChange: (e)=>dispatch(changeFilter(e.target.value)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;
